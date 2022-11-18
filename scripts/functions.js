@@ -1,3 +1,4 @@
+/*FIRST CHART */
 function pieChart() {
     $.ajax({
         async: false,
@@ -11,17 +12,13 @@ function pieChart() {
             console.log('Ajax executed the call successfully')
         },
         complete: function (response) {
-            console.log(response.responseText)
-            //Remove semicolon from json encoded text, prepare for parsing...
-            var jsonData = response.responseText.replace(';', '');
+            var jsonData = response.responseText;
             const result = jQuery.parseJSON(jsonData)
-            console.log('Parseando...')
-            console.log(result)
             var dataArray = [];
             for (var i = 0; i < result.length; i++) {
-                dataArray.push({ "name": result[i].Name, "y": parseFloat(result[i].Global_Sales) })
+                dataArray.push({ "name": result[i].Publisher, "y": parseFloat(result[i].Global_Sales) })
             }
-            Highcharts.chart('container', {
+            Highcharts.chart('pieContainer', {
                 chart: {
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
@@ -29,7 +26,7 @@ function pieChart() {
                     type: 'pie'
                 },
                 title: {
-                    text: 'Top 20 Videogame Sales in time'
+                    text: 'Top 20 Publishers of all time'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -59,7 +56,7 @@ function pieChart() {
         error: function (req, err) { console.log('Ajax received this error: ' + err); }
     });
 }
-
+/*SECOND CHART */
 function raceChart() {
     //Initial constants, variables and declaration
     const startYear = 1980,
@@ -68,6 +65,7 @@ function raceChart() {
         input = document.getElementById("play-range"),
         nbr = 20;
     let dataset, chart;
+    dataset = [];
 
 
     /*
@@ -148,127 +146,139 @@ function raceChart() {
     * Get the data for the chart
     */
     function getData(year) {
-        // Get dataset (variable containing json of data, it formats as follows: [{[{Name: '', Global_Sales: int},{nineteen more}],[nineteen more]}])
-        const yearDataset = dataset[year];
+        const yearDataset = dataset[year - 1980]
+
         const output = Object.entries(yearDataset)
-            .map(yearData => {
-                const [gameName, gameSales] = yearData;
-                return [gameName, Number(gameSales)];
+            .map(function (yearData) {
+                return [yearData[1].Name, Number(yearData[1].Global_Sales)]
             })
             .sort((a, b) => b[1] - a[1]);
         return [output[0], output.slice(1, nbr)];
     }
 
     function getSubtitle() {
-        const population = (getData(input.value)[0][1] / 1000000000).toFixed(2);
+        const totalSales = (getData(input.value)[0][1]).toFixed(2);
         return `<span style="font-size: 80px">${input.value}</span>
         <br>
         <span style="font-size: 22px">
-            Total: <b>: ${population}</b> billion
+            Total: <b>: ${totalSales}</b> million sold
         </span>`;
     }
 
     (async () => {
-        ///var query = [];
-        dataset = await fetch(
-            'scripts/data.php', {
-            method: 'get',
-            data: { choice: 'race', year: 1980 },
-        }
-        ).then(response => response.json())
-            .catch(alert('AAAAA'));
+        $.ajax({
+            async: false,
+            url: "scripts/data.php",
+            type: 'GET',
+            data: {
+                choice: 'race',
+                year: 1980
+            },
+            cache: true,
+            success: function (query) {
+                console.log('Ajax executed the call successfully (race)')
+            },
+            complete: function (response) {
+                var jsonData = response.responseText;
+                const result = jQuery.parseJSON(jsonData)
+                dataset = result
 
 
-        chart = Highcharts.chart("container", {
-            chart: {
-                animation: {
-                    duration: 500
-                },
-                marginRight: 50
-            },
-            title: {
-                text: 'World population by country',
-                align: 'left'
-            },
-            subtitle: {
-                useHTML: true,
-                text: getSubtitle(),
-                floating: true,
-                align: 'right',
-                verticalAlign: 'middle',
-                y: -20,
-                x: -100
-            },
-
-            legend: {
-                enabled: false
-            },
-            xAxis: {
-                type: "category"
-            },
-            yAxis: {
-                opposite: true,
-                tickPixelInterval: 150,
-                title: {
-                    text: null
-                }
-            },
-            plotOptions: {
-                series: {
-                    animation: false,
-                    groupPadding: 0,
-                    pointPadding: 0.1,
-                    borderWidth: 0,
-                    colorByPoint: true,
-                    dataSorting: {
-                        enabled: true,
-                        matchByName: true
-                    },
-                    type: "bar",
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
-            series: [
-                {
-                    type: 'bar',
-                    name: startYear,
-                    data: getData(startYear)[1]
-                }
-            ],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 550
-                    },
-                    chartOptions: {
-                        xAxis: {
-                            visible: false
+                chart = Highcharts.chart('raceContainer', {
+                    chart: {
+                        animation: {
+                            duration: 500
                         },
-                        subtitle: {
-                            x: 0
-                        },
-                        plotOptions: {
-                            series: {
-                                dataLabels: [{
-                                    enabled: true,
-                                    y: 8
-                                }, {
-                                    enabled: true,
-                                    format: '{point.name}',
-                                    y: -8,
-                                    style: {
-                                        fontWeight: 'normal',
-                                        opacity: 0.7
-                                    }
-                                }]
+                        marginRight: 50,
+                    },
+                    title: {
+                        text: 'Videogames by Global Sales',
+                        align: 'left'
+                    },
+                    subtitle: {
+                        useHTML: true,
+                        text: getSubtitle(),
+                        floating: true,
+                        align: 'right',
+                        verticalAlign: 'middle',
+                        y: -20,
+                        x: -100
+                    },
+
+                    legend: {
+                        enabled: false
+                    },
+                    xAxis: {
+                        type: "category"
+                    },
+                    yAxis: {
+                        opposite: true,
+                        tickPixelInterval: 150,
+                        title: {
+                            text: null
+                        }
+                    },
+                    plotOptions: {
+                        series: {
+                            animation: false,
+                            groupPadding: 0,
+                            pointPadding: 0.1,
+                            borderWidth: 0,
+                            colorByPoint: true,
+                            dataSorting: {
+                                enabled: true,
+                                matchByName: true
+                            },
+                            type: "bar",
+                            dataLabels: {
+                                enabled: true
                             }
                         }
+                    },
+                    series: [
+                        {
+                            type: 'bar',
+                            name: startYear,
+                            data: getData(startYear)[1],
+
+                        }
+                    ],
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 550
+                            },
+                            chartOptions: {
+                                xAxis: {
+                                    visible: false
+                                },
+                                subtitle: {
+                                    x: 0
+                                },
+                                plotOptions: {
+                                    series: {
+                                        dataLabels: [{
+                                            enabled: true,
+                                            y: 8
+                                        }, {
+                                            enabled: true,
+                                            format: '{point.name}',
+                                            y: -8,
+                                            style: {
+                                                fontWeight: 'normal',
+                                                opacity: 0.7
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }]
                     }
-                }]
+                })
             }
-        });
+
+
+        })
     })();
 
     /*
@@ -298,7 +308,7 @@ function raceChart() {
         chart.update(
             {
                 subtitle: {
-                    text: getSubtitle()
+                    text: getSubtitle(dataset)
                 }
             },
             false,
@@ -308,7 +318,7 @@ function raceChart() {
 
         chart.series[0].update({
             name: input.value,
-            data: getData(input.value)[1]
+            data: getData(input.value, dataset)[1]
         });
     }
 
@@ -337,3 +347,81 @@ function raceChart() {
         update();
     });
 }
+/* THIRD CHART */
+function donutChart() {
+    $.ajax({
+        async: false,
+        url: "scripts/data.php",
+        type: 'GET',
+        data: {
+            choice: 'donut'
+        },
+        cache: true,
+        success: function (query) {
+            console.log('Ajax executed the call successfully')
+        },
+        complete: function (response) {
+            var jsonData = response.responseText;
+            const result = jQuery.parseJSON(jsonData)
+            var calculateTotal = Object.entries(result).map(function (entry) {
+                return entry[1].length
+            })
+            var totalGames = calculateTotal.reduce((partialSum, a) => partialSum + a, 0);
+            var datos = Object.entries(result).map(function (entry) {
+                return {
+                    name: entry[0],
+                    y: (entry[1].length / totalGames),
+                    dataLabels: {
+                        enabled: true
+                    },
+                }
+            })
+            var chart = Highcharts.chart('donutContainer', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: 0,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Genres<br>by<br>popularity',
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    y: 60
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        dataLabels: {
+                            enabled: true,
+                            distance: -50,
+                            style: {
+                                fontWeight: 'bold',
+                                color: 'white'
+                            }
+                        },
+                        startAngle: -90,
+                        endAngle: 90,
+                        center: ['50%', '75%'],
+                        size: '110%'
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Quantity of games',
+                    innerSize: '50%',
+                    data: datos
+                }]
+            });
+        },
+        error: function (req, err) { console.log('Ajax received this error: ' + err); }
+    });
+}
+
+/* */

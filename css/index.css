@@ -5,24 +5,31 @@
 
 h1.title {
     text-align: center;
-    color: blue;
+    color: black;
+    text-shadow: 0 0 4px #00c3ff, 0 0 5px #004cc5;
     font-family: 'Noto Serif', serif;
 }
 
 h2.subtitle {
-    color: cornflowerblue;
+    color: grey;
+    text-shadow: 0 0 4px #00c3ff, 0 0 10px #004cc5;
     font-family: 'Montserrat', sans-serif;
     font-style: italic;
     text-align: center;
 }
 
 p {
-    color: white;
+    color: aqua;
+    text-shadow: 0 0 3px #0e8de8, 0 0 5px #5a5aeb;
     font-family: 'Noto Serif Oriya', serif;
 }
 
+
+
 body {
+
     background: url('../media/img/background.webp');
+
 }
 
 img#myImage {
@@ -66,13 +73,51 @@ div#container {
     background: #f8f8f8;
 }
 
-div#raceChart-container {
+
+.raceChart-container {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 150px;
+    left: 50px;
+    height: 900px;
+    width: 1000px;
+    max-width: 2000px;
 
 }
 
-div#pie-container {
-    display: inline-block;
+.pie-container {
+    position: absolute;
+    top: 166px;
+    left: 1100px;
+    height: 900px;
+    width: 700px;
+    max-width: 1000px;
+}
+
+.highcharts-description {
+    position: absolute;
+    top: 500px;
+    left: 0px;
+}
+
+.donutChart-container {
+    position: absolute;
+    top: 750px;
+    left: 50px;
+    height: 900px;
+    width: 1000px;
+    max-width: 2000px;
+}
+
+.info {
+    position: relative;
+    float: right;
+    top: 550px;
+    right: 100px;
+    height: 100px;
+    width: 700px;
+}
+
+.info-text {
+    text-align: left;
+    text-align-last: justify;
 }

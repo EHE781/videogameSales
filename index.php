@@ -19,6 +19,7 @@ require_once 'scripts/data.php';
     </script>
     <!--Highcharts-->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <!-- Required meta tags -->
@@ -29,7 +30,7 @@ require_once 'scripts/data.php';
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <title>¡DASHBOARD IN PROGRESS!</title>
+    <title>¡ADIIU DASHBOARD!</title>
 
     <link rel="stylesheet" href="css/index.css">
 
@@ -39,7 +40,7 @@ require_once 'scripts/data.php';
     <!--BOOTSTRAP NAVBAR-->
 
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <a class="navbar-brand" href="#"><strong>Home</strong></a>
+        <a class="navbar-brand" href="#"><img src="media\img\logoUIB.png" alt="..." height="36"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
             aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -63,8 +64,8 @@ require_once 'scripts/data.php';
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="https://www.uib.es/">Our University</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">About us</a>
-                        <!--por ver, o pag web aparte o link a Linkedin-->
+                        <a class="dropdown-item" href="https://www.linkedin.com/in/emanuel-hegedus-1333301a7/">About
+                            us</a>
                     </div>
                 </li>
             </ul>
@@ -79,35 +80,36 @@ require_once 'scripts/data.php';
 <body>
 
 
-    <h1 class="title">Videogames sales</h1>
+    <h1 class="title">Videogames Dashboard</h1>
 
-    <h2 class="subtitle">An insight of video games sales</h2>
+    <h2 class="subtitle">An insight on publishers and videogames in time</h2>
 
-    <p>In this case JavaScript changes the value of the src (source) attribute of an image.</p>
     <?php
     #getDatos();
     ?>
-    <div id="pie-container">
+    <div class="pie-container">
         <div id="piechart head">
             <!--Title and head of piechart-->
+            <p class="pie-title">Publishers ranked by most sales by top 20</p>
         </div>
-        <div id="piechart body">
+        <div id="pieContainer">
             <!--Pie chart-->
             <script lang="JavaScript">
             $(document).ready(function() {
-                //pieChart();
+                pieChart();
             });
             </script>
         </div>
     </div>
-    <div id='raceChart-container'>
+    <div class="spacer"></div>
+    <div class='raceChart-container'>
         <figure class="highcharts-figure">
             <div id="parent-container">
                 <div id="play-controls">
                     <button id="play-pause-button" class="fa fa-play" title="play"></button>
                     <input id="play-range" type="range" value="1980" min="1980" max="2020" />
                 </div>
-                <div id="container">
+                <div id="raceContainer">
                     <!--Racebar chart-->
                     <script lang="JavaScript">
                     $(document).ready(function() {
@@ -120,6 +122,33 @@ require_once 'scripts/data.php';
                 Bar chart showing the world videogames sales (The Top 20) from 1980 to 2020.
             </p>
         </figure>
+    </div>
+    <div class="spacer"></div>
+    <div class='donutChart-container'>
+        <figure class="highcharts-figure">
+            <div id="donutContainer">
+                <!--Donut hierarchy chart-->
+                <script lang="JavaScript">
+                $(document).ready(function() {
+                    donutChart();
+                });
+                </script>
+            </div>
+            <p class="highcharts-description">
+                Videogames popularity by genre
+            </p>
+        </figure>
+    </div>
+    <div class="spacer"></div>
+    <div class="info">
+        <p class="info-text">These three charts give us a better view on how videogames evolved and the user's
+            preferences over the years.
+            In the first years we see a lot of movement, but as we get closer to actuality, the games remain on a steady
+            way.
+            Also we can observe that currently Nintendo has held most of the market and the preferred genres are
+            usually<br>
+            <span class="dot"></span>Action,<br> Adventure,<br>Sports.
+        </p>
     </div>
 
 </body>
