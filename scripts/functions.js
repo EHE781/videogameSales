@@ -9,7 +9,7 @@ function pieChart() {
         },
         cache: true,
         success: function (query) {
-            console.log('Ajax executed the call successfully')
+            console.log('Ajax executed the call successfully (pie)')
         },
         complete: function (response) {
             var jsonData = response.responseText;
@@ -358,7 +358,7 @@ function donutChart() {
         },
         cache: true,
         success: function (query) {
-            console.log('Ajax executed the call successfully')
+            console.log('Ajax executed the call successfully (donut)')
         },
         complete: function (response) {
             var jsonData = response.responseText;
